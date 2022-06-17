@@ -27,7 +27,6 @@ export class AnnouncementsService {
   }
 
   getAnnouncementsForPeriod(period: FilterType) {
-    console.log(period)
     this.http.get<{message: string, announcements: IAnnouncement[]}>(`http://localhost:3000/api/v1/announcements/${period}`)
       .subscribe((response) => {
         this.announcements = response.announcements;
@@ -46,10 +45,8 @@ export class AnnouncementsService {
   }
 
   deleteAnnouncement(announcementId: string) {
-    console.log(announcementId);
     this.http.delete<{message: string, announcements: IAnnouncement[]}>(`http://localhost:3000/api/v1/announcements/${announcementId}`)
       .subscribe((response) => {
-        console.log(response);
         this.announcements = response.announcements;
         this.announcementUpdate.next([...this.announcements])
       })

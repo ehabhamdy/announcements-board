@@ -37,9 +37,6 @@ router.get('/:filter', (req: Request, res: Response) => {
       .getItems()
       .filter((item) => item.createdOn > startingDate);
   }
-
-  console.log(filteredAnnouncements);
-
   res.status(200).send({
     message: 'succeeded',
     announcements: filteredAnnouncements,
