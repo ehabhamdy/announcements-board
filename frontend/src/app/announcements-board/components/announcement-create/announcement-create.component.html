@@ -1,0 +1,12 @@
+<div class="mb-3">
+  <p for="announcementContent" class="form-label fs-6">Announcement</p>
+  <textarea
+    [(ngModel)]="newAnnouncementContent"
+    id="announcementContent"
+    rows="3"
+    placeholder="Please enter you announcement content ..."
+    class="form-control"> </textarea>
+</div>
+<button type="button" class="btn btn-primary" (click)="onCreateAnnouncement()">Create Announcement
+</button>
+
