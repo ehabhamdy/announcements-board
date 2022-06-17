@@ -7,7 +7,7 @@ describe('Base Route Test', function () {
       const app = server.getExpressApplication();
 
       request(app)
-        .get('/api/base')
+        .get('/api/v1/base')
         .expect(200)
         .then((response) => {
           expect(response.body.message).toMatch(

@@ -29,7 +29,6 @@ export default abstract class BaseApp {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use('/images', express.static(path.join(__dirname, '../images')));
-    // console.log(path.join(__dirname, '../images'));
     app.all('/', (_: Request, res: Response) => {
       res.redirect('/api/v1/base');
     });

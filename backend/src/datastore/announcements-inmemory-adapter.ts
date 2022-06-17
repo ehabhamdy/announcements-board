@@ -25,4 +25,8 @@ export class AnnouncementsInmemoryAdapter
   deleteItem(id: string): IAnnouncement[] {
     return this.store.deleteItem(id);
   }
+
+  resetStorage(): void {
+    this.store.reset();
+  }
 }

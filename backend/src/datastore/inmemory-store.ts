@@ -27,4 +27,8 @@ export class InmemoryStore {
   getItems(): IAnnouncement[] {
     return this.storage;
   }
+
+  reset(): void {
+    this.storage = [];
+  }
 }
