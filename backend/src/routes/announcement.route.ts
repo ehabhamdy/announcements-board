@@ -1,7 +1,9 @@
 import express, { Request, Response, Router } from 'express';
-import { InmemoryStore } from '../datastore/inmemory-store';
-import { v4 as uuidv4 } from 'uuid';
 import { IAnnouncement } from '../models/announcement';
+import { AnnouncementsInmemoryAdapter } from '../datastore/announcements-inmemory-adapter';
+import { StorageAdapter } from '../datastore/storage-adapter';
+
+const storageAdapter: StorageAdapter<IAnnouncement> = new AnnouncementsInmemoryAdapter();
 
 const FilterMap = {
   All: 'All',
@@ -15,7 +17,7 @@ const router: Router = express.Router();
 router.get('/', (_req: Request, res: Response) => {
   res.status(200).send({
     message: 'succeeded',
-    announcements: InmemoryStore.getInstance().getItems(),
+    announcements: storageAdapter.getItems(),
   });
 });
 
@@ -25,13 +27,13 @@ router.get('/:filter', (req: Request, res: Response) => {
   const filterType = req.params.filter as ObjectKey;
   let filteredAnnouncements;
   if (filterType == 'All') {
-    filteredAnnouncements = InmemoryStore.getInstance().getItems();
+    filteredAnnouncements = storageAdapter.getItems();
   } else {
     const startingDate: Date = new Date();
     startingDate.setDate(now.getDate() - FilterMap[filterType]);
     startingDate.setHours(0, 0, 0, 0);
 
-    filteredAnnouncements = InmemoryStore.getInstance()
+    filteredAnnouncements = storageAdapter
       .getItems()
       .filter((item) => item.createdOn > startingDate);
   }
@@ -45,17 +47,15 @@ router.get('/:filter', (req: Request, res: Response) => {
 });
 
 router.post('/', (req: Request, res: Response) => {
-  const newAnnouncement: IAnnouncement = req.body;
-  newAnnouncement.id = uuidv4();
-  newAnnouncement.createdOn = new Date();
-  InmemoryStore.getInstance().addItem(newAnnouncement);
+  const newAnnouncement: IAnnouncement = storageAdapter.addItem(req.body);
+
   res.status(201).send({ message: 'succeeded', announcement: newAnnouncement });
 });
 
 router.delete('/:id', (req: Request, res: Response) => {
   res.status(202).send({
     message: 'succeeded',
-    announcements: InmemoryStore.getInstance().deleteItem(req.params.id),
+    announcements: storageAdapter.deleteItem(req.params.id),
   });
 });
 
