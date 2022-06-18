@@ -21,15 +21,17 @@ router.get('/:filter', async (req: Request, res: Response) => {
   type ObjectKey = keyof typeof FilterMap;
   const filterType = req.params.filter as ObjectKey;
   let filteredAnnouncements;
+  const allAnnouncements = await storageAdapter.getItems();
   if (filterType == 'All') {
-    filteredAnnouncements = storageAdapter.getItems();
+    filteredAnnouncements = allAnnouncements;
   } else {
     const startingDate: Date = new Date();
     startingDate.setDate(now.getDate() - FilterMap[filterType]);
     startingDate.setHours(0, 0, 0, 0);
 
-    const response = await storageAdapter.getItems();
-    filteredAnnouncements = response.filter((item) => item.createdOn > startingDate);
+    filteredAnnouncements = allAnnouncements.filter(
+      (item) => item.createdOn > startingDate
+    );
   }
   res.status(200).send({
     message: 'succeeded',
