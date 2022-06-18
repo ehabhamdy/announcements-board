@@ -2,7 +2,7 @@ import Server from '../server/server';
 import request from 'supertest';
 import { IAnnouncement } from '../models/announcement';
 import { FilterType } from '../routes/utilities/filter.type';
-import {FilterMap} from "../routes/utilities/filter.map";
+import { FilterMap } from '../routes/utilities/filter.map';
 
 describe('Testing announcements route endpoints', function () {
   it('Create a test announcement', async function () {
