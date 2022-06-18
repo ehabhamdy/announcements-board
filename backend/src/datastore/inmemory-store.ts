@@ -15,17 +15,25 @@ export class InmemoryStore {
     return this.dataStore;
   }
 
-  addItem(item: IAnnouncement): void {
-    this.storage.push(item);
+  async addItem(item: IAnnouncement): Promise<IAnnouncement> {
+    return new Promise((resolve) => {
+      this.storage.push(item);
+      resolve(item);
+    });
   }
 
-  deleteItem(id: string): IAnnouncement[] {
+  async deleteItem(id: string): Promise<IAnnouncement[]> {
     this.storage = this.storage.filter((item) => item.id !== id);
-    return this.storage;
+    const resultPromise = new Promise<IAnnouncement[]>((resolve) => {
+      resolve(this.storage);
+    });
+    return resultPromise;
   }
 
-  getItems(): IAnnouncement[] {
-    return this.storage;
+  getItems(): Promise<IAnnouncement[]> {
+    return new Promise<IAnnouncement[]>((resolve) => {
+      resolve(this.storage);
+    });
   }
 
   reset(): void {

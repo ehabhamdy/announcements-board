@@ -8,14 +8,15 @@ const storageAdapter: StorageAdapter<IAnnouncement> = new AnnouncementsInmemoryA
 
 const router: Router = express.Router();
 
-router.get('/', (_req: Request, res: Response) => {
+router.get('/', async (_req: Request, res: Response) => {
+  const response = await storageAdapter.getItems();
   res.status(200).send({
     message: 'succeeded',
-    announcements: storageAdapter.getItems(),
+    announcements: response,
   });
 });
 
-router.get('/:filter', (req: Request, res: Response) => {
+router.get('/:filter', async (req: Request, res: Response) => {
   const now = new Date();
   type ObjectKey = keyof typeof FilterMap;
   const filterType = req.params.filter as ObjectKey;
@@ -27,9 +28,8 @@ router.get('/:filter', (req: Request, res: Response) => {
     startingDate.setDate(now.getDate() - FilterMap[filterType]);
     startingDate.setHours(0, 0, 0, 0);
 
-    filteredAnnouncements = storageAdapter
-      .getItems()
-      .filter((item) => item.createdOn > startingDate);
+    const response = await storageAdapter.getItems();
+    filteredAnnouncements = response.filter((item) => item.createdOn > startingDate);
   }
   res.status(200).send({
     message: 'succeeded',
@@ -37,16 +37,18 @@ router.get('/:filter', (req: Request, res: Response) => {
   });
 });
 
-router.post('/', (req: Request, res: Response) => {
-  const newAnnouncement: IAnnouncement = storageAdapter.addItem(req.body);
+router.post('/', async (req: Request, res: Response) => {
+  const newAnnouncement: IAnnouncement = await storageAdapter.addItem(req.body);
 
   res.status(201).send({ message: 'succeeded', announcement: newAnnouncement });
 });
 
 router.delete('/:id', (req: Request, res: Response) => {
-  res.status(202).send({
-    message: 'succeeded',
-    announcements: storageAdapter.deleteItem(req.params.id),
+  storageAdapter.deleteItem(req.params.id).then((response) => {
+    res.status(202).send({
+      message: 'succeeded',
+      announcements: response,
+    });
   });
 });
 

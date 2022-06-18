@@ -11,20 +11,19 @@ export class AnnouncementsInmemoryAdapter
     this.store = InmemoryStore.getInstance();
   }
 
-  addItem(newAnnouncement: IAnnouncement): IAnnouncement {
+  addItem(newAnnouncement: IAnnouncement): Promise<IAnnouncement> {
     newAnnouncement.id = uuidv4();
     if (typeof newAnnouncement.createdOn === 'undefined') {
       newAnnouncement.createdOn = new Date();
     }
-    this.store.addItem(newAnnouncement);
-    return newAnnouncement;
+    return this.store.addItem(newAnnouncement);
   }
 
-  getItems(): IAnnouncement[] {
+  getItems(): Promise<IAnnouncement[]> {
     return this.store.getItems();
   }
 
-  deleteItem(id: string): IAnnouncement[] {
+  deleteItem(id: string): Promise<IAnnouncement[]> {
     return this.store.deleteItem(id);
   }
 
