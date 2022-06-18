@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {IAnnouncement} from "../../models/announcement";
 import {AnnouncementsService} from "../../services/announcements.service";
+import {NgForm} from "@angular/forms";
 
 @Component({
   selector: 'app-announcement-create',
@@ -8,7 +9,6 @@ import {AnnouncementsService} from "../../services/announcements.service";
   styleUrls: ['./announcement-create.component.scss']
 })
 export class AnnouncementCreateComponent implements OnInit {
-  newAnnouncementContent = '';
 
   constructor(private announcementsService: AnnouncementsService) {
   }
@@ -16,10 +16,14 @@ export class AnnouncementCreateComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onCreateAnnouncement() {
+  onCreateAnnouncement(createAnnouncementForm: NgForm) {
+    if (createAnnouncementForm.invalid) {
+      return
+    }
     const newAnnouncement: Partial<IAnnouncement> = {
-      content: this.newAnnouncementContent,
+      content: createAnnouncementForm.value.contentInput,
     };
     this.announcementsService.createAnnouncement(newAnnouncement)
+    createAnnouncementForm.value.contentInput = "";
   }
 }

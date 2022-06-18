@@ -1,12 +1,18 @@
-<div class="mb-3">
-  <p for="announcementContent" class="form-label fs-6">Announcement</p>
-  <textarea
-    [(ngModel)]="newAnnouncementContent"
-    id="announcementContent"
-    rows="3"
-    placeholder="Please enter you announcement content ..."
-    class="form-control"> </textarea>
-</div>
-<button type="button" class="btn btn-primary" (click)="onCreateAnnouncement()">Create Announcement
-</button>
+<form (submit)="onCreateAnnouncement(announcementCreateFrom)" #announcementCreateFrom="ngForm">
 
+    <p for="announcementContent" class="form-label fs-6">Announcement</p>
+    <textarea
+      ngModel
+      required
+      name="contentInput"
+      id="announcementContent"
+      rows="3"
+      placeholder="Please enter you announcement content ..."
+      class="form-control"
+      #content="ngModel"> </textarea>
+  <p class="bd-highlight fs-7 text-danger" *ngIf="content.invalid && announcementCreateFrom.submitted">
+    Please enter the announcement content before submitting the form
+  </p>
+  <button type="submit" class="mt-3 btn btn-primary">Create Announcement
+  </button>
+</form>
