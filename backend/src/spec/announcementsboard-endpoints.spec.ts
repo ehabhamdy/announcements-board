@@ -1,6 +1,8 @@
 import Server from '../server/server';
 import request from 'supertest';
 import { IAnnouncement } from '../models/announcement';
+import { FilterType } from '../routes/utilities/filter.type';
+import {FilterMap} from "../routes/utilities/filter.map";
 
 describe('Testing announcements route endpoints', function () {
   it('Create a test announcement', async function () {
@@ -61,6 +63,40 @@ describe('Testing announcements route endpoints', function () {
         .then((response) => {
           expect(response.body.message).toMatch('succeeded');
           expect(response.body.announcements.length).toEqual(0);
+        });
+    });
+  });
+
+  it('Get announcements posted during the last week', async function () {
+    Server.bootstrap().then((server: Server) => {
+      const app = server.getExpressApplication();
+      const storage = server.getAppStorage();
+      storage.resetStorage();
+      const now = new Date();
+      const oldDate = new Date()
+      const filter = FilterType.Week;
+      oldDate.setDate(now.getDate() - FilterMap[FilterType.Month]);
+      const oldAnnouncement: any = {
+        content: 'Old Announcement',
+        createdOn: oldDate,
+      };
+      storage.addItem(oldAnnouncement);
+      const newAnnouncement: any = {
+        content: 'New Announcement',
+        createdOn: now,
+      };
+      storage.addItem(newAnnouncement);
+      request(app)
+        .get(`/api/v1/announcements/${filter}`)
+        .expect(200)
+        .then((response) => {
+          console.log(response);
+          expect(response.body.message).toMatch('succeeded');
+          expect(response.body.announcements.length).toEqual(1);
+          expect(response.body.announcements[0].content).toMatch(
+            newAnnouncement.content
+          );
+          expect(response.body.announcements[0].createdOn).toBeDefined();
         });
     });
   });

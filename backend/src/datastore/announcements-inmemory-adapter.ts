@@ -13,7 +13,9 @@ export class AnnouncementsInmemoryAdapter
 
   addItem(newAnnouncement: IAnnouncement): IAnnouncement {
     newAnnouncement.id = uuidv4();
-    newAnnouncement.createdOn = new Date();
+    if (typeof newAnnouncement.createdOn === 'undefined') {
+      newAnnouncement.createdOn = new Date();
+    }
     this.store.addItem(newAnnouncement);
     return newAnnouncement;
   }

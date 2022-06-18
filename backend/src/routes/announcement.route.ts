@@ -2,15 +2,9 @@ import express, { Request, Response, Router } from 'express';
 import { IAnnouncement } from '../models/announcement';
 import { AnnouncementsInmemoryAdapter } from '../datastore/announcements-inmemory-adapter';
 import { StorageAdapter } from '../datastore/storage-adapter';
+import { FilterMap } from './utilities/filter.map';
 
 const storageAdapter: StorageAdapter<IAnnouncement> = new AnnouncementsInmemoryAdapter();
-
-const FilterMap = {
-  All: 'All',
-  Week: 7,
-  Month: 30,
-  Today: 0,
-};
 
 const router: Router = express.Router();
 
