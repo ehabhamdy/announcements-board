@@ -73,8 +73,7 @@ describe('Testing announcements route endpoints', function () {
       const storage = server.getAppStorage();
       storage.resetStorage();
       const now = new Date();
-      const oldDate = new Date()
-      const filter = FilterType.Week;
+      const oldDate = new Date();
       oldDate.setDate(now.getDate() - FilterMap[FilterType.Month]);
       const oldAnnouncement: any = {
         content: 'Old Announcement',
@@ -86,6 +85,8 @@ describe('Testing announcements route endpoints', function () {
         createdOn: now,
       };
       storage.addItem(newAnnouncement);
+
+      const filter = FilterType.Week;
       request(app)
         .get(`/api/v1/announcements/${filter}`)
         .expect(200)
