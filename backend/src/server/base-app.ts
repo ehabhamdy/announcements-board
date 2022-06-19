@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, {NextFunction, Request, Response} from 'express';
 import bodyParser from 'body-parser';
 import AppConfig from './config/app-config';
 import * as path from 'path';
@@ -6,6 +6,7 @@ import baseRouter from '../routes/base.route';
 import morgan from 'morgan';
 import { RouterModel } from '../models/router-model';
 import announcementRoute from '../routes/announcement.route';
+import { ExpressError } from '../models/Error';
 
 export default abstract class BaseApp {
   protected app: express.Application = express();
@@ -19,6 +20,8 @@ export default abstract class BaseApp {
     this.getExpressRoutes().forEach(({ contextPath, router }) => {
       this.app?.use(contextPath, router);
     });
+
+    this.applyErrorMiddleWare(this.app);
   }
 
   protected applyExpressMiddleWare(app: express.Application): void {
@@ -44,6 +47,23 @@ export default abstract class BaseApp {
       );
       next();
     });
+  }
+
+  protected applyErrorMiddleWare(app: express.Application): void {
+    app.use(
+      (
+        err: ExpressError,
+        _req: Request,
+        res: Response,
+        _next: NextFunction
+      ) => {
+        console.error(err.message);
+        if (!err.statusCode) {
+          err.statusCode = 500;
+        } // If err has no specified error code, set error code to 'Internal Server Error (500)'
+        res.status(err.statusCode).json({ message: err.message }).end();
+      }
+    );
   }
 
   public getExpressRoutes(): Array<RouterModel> {
