@@ -3,8 +3,14 @@ import { IAnnouncement } from '../models/announcement';
 import { AnnouncementsInmemoryAdapter } from '../datastore/announcements-inmemory-adapter';
 import { StorageAdapter } from '../datastore/storage-adapter';
 import { FilterMap } from './utilities/filter.map';
+import { generateRandomData } from './utilities/generate-random-data';
 
 const storageAdapter: StorageAdapter<IAnnouncement> = new AnnouncementsInmemoryAdapter();
+
+/* Inserting some initial data */
+generateRandomData(storageAdapter).then(() =>
+  console.log('Random data generated')
+);
 
 const router: Router = express.Router();
 
