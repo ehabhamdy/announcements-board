@@ -1,9 +1,10 @@
-import express, { Request, Response, Router } from 'express';
+import express, {NextFunction, Request, Response, Router} from 'express';
 import { IAnnouncement } from '../models/announcement';
 import { AnnouncementsInmemoryAdapter } from '../datastore/announcements-inmemory-adapter';
 import { StorageAdapter } from '../datastore/storage-adapter';
 import { FilterMap } from './utilities/filter.map';
 import { generateRandomData } from './utilities/generate-random-data';
+import {ExpressError} from "../models/Error";
 
 const storageAdapter: StorageAdapter<IAnnouncement> = new AnnouncementsInmemoryAdapter();
 
@@ -51,13 +52,20 @@ router.post('/', async (req: Request, res: Response) => {
   res.status(201).send({ message: 'succeeded', announcement: newAnnouncement });
 });
 
-router.delete('/:id', (req: Request, res: Response) => {
-  storageAdapter.deleteItem(req.params.id).then((response) => {
-    res.status(202).send({
-      message: 'succeeded',
-      announcements: [...response].reverse(),
+router.delete('/:id', (req: Request, res: Response, next: NextFunction) => {
+  storageAdapter
+    .deleteItem(req.params.id)
+    .then((response) => {
+      res.status(202).send({
+        message: 'succeeded',
+        announcements: [...response].reverse(),
+      });
+    })
+    .catch((reason) => {
+      const err = new ExpressError(reason);
+      err.statusCode = 404;
+      return next(err);
     });
-  });
 });
 
 export default router;
