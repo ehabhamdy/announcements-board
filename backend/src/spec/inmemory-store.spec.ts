@@ -9,6 +9,7 @@ describe('Testing in memory storage option', function () {
       id: uuidv4(),
       createdOn: new Date(),
     };
+    InmemoryStore.getInstance().reset();
     await InmemoryStore.getInstance().addItem(newAnnouncement);
     const response = await InmemoryStore.getInstance().getItems();
     expect(response[0].content).toMatch('Test');
