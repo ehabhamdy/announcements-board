@@ -15,14 +15,14 @@ export class InmemoryStore {
     return this.dataStore;
   }
 
-  async addItem(item: IAnnouncement): Promise<IAnnouncement> {
+  addItem(item: IAnnouncement): Promise<IAnnouncement> {
     return new Promise((resolve) => {
       this.storage.push(item);
       resolve(item);
     });
   }
 
-  async deleteItem(id: string): Promise<IAnnouncement[]> {
+  deleteItem(id: string): Promise<IAnnouncement[]> {
     this.storage = this.storage.filter((item) => item.id !== id);
     const resultPromise = new Promise<IAnnouncement[]>((resolve) => {
       resolve(this.storage);
