@@ -12,7 +12,7 @@ router.get('/', async (_req: Request, res: Response) => {
   const response = await storageAdapter.getItems();
   res.status(200).send({
     message: 'succeeded',
-    announcements: response,
+    announcements: [...response].reverse(),
   });
 });
 
@@ -35,7 +35,7 @@ router.get('/:filter', async (req: Request, res: Response) => {
   }
   res.status(200).send({
     message: 'succeeded',
-    announcements: filteredAnnouncements,
+    announcements: [...filteredAnnouncements].reverse(),
   });
 });
 
@@ -49,7 +49,7 @@ router.delete('/:id', (req: Request, res: Response) => {
   storageAdapter.deleteItem(req.params.id).then((response) => {
     res.status(202).send({
       message: 'succeeded',
-      announcements: response,
+      announcements: [...response].reverse(),
     });
   });
 });
