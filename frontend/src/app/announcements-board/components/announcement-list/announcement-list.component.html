@@ -2,7 +2,7 @@
 <ng-container *ngIf="announcements.length > 0">
   <div class="card mb-2" *ngFor="let announcement of announcements">
     <div class="card-body">
-      <p class="card-text">{{announcement.content}}</p>
+      <p class="card-text fw-bold">{{announcement.content}}</p>
       <p class="card-title text-end">Created On: {{announcement.createdOn | date:'medium'}}</p>
       <a href="#" class="btn btn-primary" (click)="onDelete(announcement.id)">Delete</a>
     </div>

@@ -1,0 +1,10 @@
+version: "3"
+services:
+  frontend:
+    build:
+      context: ./frontend
+    image: ehabhamdy/frontend
+  backend_user:
+    build:
+      context: ./backend
+    image: ehabhamdy/backend

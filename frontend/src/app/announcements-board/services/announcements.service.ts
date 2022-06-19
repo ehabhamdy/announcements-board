@@ -38,7 +38,7 @@ export class AnnouncementsService {
     if (announcement.content) {
       this.http.post<{messsage: string, announcement: IAnnouncement}>('http://localhost:3000/api/v1/announcements', announcement)
         .subscribe((response) => {
-          this.announcements.push(response.announcement)
+          this.announcements.unshift(response.announcement)
           this.announcementUpdate.next([...this.announcements])
         });
     }

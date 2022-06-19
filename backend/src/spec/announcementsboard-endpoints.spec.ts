@@ -49,14 +49,14 @@ describe('Testing announcements route endpoints', function () {
   });
 
   it('Delete an announcement', async function () {
-    Server.bootstrap().then((server: Server) => {
+    Server.bootstrap().then(async (server: Server) => {
       const app = server.getExpressApplication();
       const storage = server.getAppStorage();
       storage.resetStorage();
       const payload: any = {
         content: 'Test Announcement',
       };
-      const newItem = storage.addItem(payload);
+      const newItem = await storage.addItem(payload);
       request(app)
         .delete(`/api/v1/announcements/${newItem.id}`)
         .expect(202)
