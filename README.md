@@ -26,14 +26,14 @@ The architecture is still not implemented due to time limitation of the task.
 I have opted to use AWS Amplify service as an infrastructure bootstrapper of AWS
 resources for the following reasons:
 1. Amplify makes it easy to compose our architecture serverless components such as s3 buckets 
-(including the necessary permissions and website hosting setup), and an API gateway the connects
+(including the necessary permissions and website hosting setup), and API gateway that connects
 to a lambda hosting a express server application.
 2. I opted for an opensearch based as a source of truth. Opensearch allows extremely fast search
 text data such as the announcements contents. I have built the backend to be able to implement 
 other storage options via the storage adapter and easily inject the new storage type without 
 changing the business logic code in the API endpoints.
-3. As a limitation of Amplify, opensearch domains cannot be created with Amplify cli with out 
-current service setup, However, the domain can can created as a custom resource in amplify with
+3. As a limitation of Amplify, opensearch domains cannot be created with Amplify cli with the 
+current service setup, However, the domain can be created as a custom resource in amplify with
 the help of CDK or CloudFormation and integrated into amplify backend configuration to make the 
 lambda function aware of that domain.
 4. With Amplify we get a CI/CD pipeline out of the box. It can be configured to run the backend 
@@ -44,7 +44,7 @@ domain (Availability Zones, instance type, and number of nodes).
  <img src="architecture.png" width="800">
 </p>
 
-## Screenshot of the running app on the local machinee
+## Screenshot of the running app on the local machine
 <p>
  <img src="app-screenshot.png" width="800">
 </p>
