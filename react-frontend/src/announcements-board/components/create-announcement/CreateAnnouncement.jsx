@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-import "./create-announcement.css";
 import "bootstrap/dist/css/bootstrap.css";
 
 function CreateAnnouncement({ onCreateAnnouncement }) {

@@ -1,3 +1,5 @@
+import FilterItem from "./FilterItem";
+
 export const FilterType = {
   All: Symbol("All"),
   Week: Symbol("Week"),
@@ -24,25 +26,11 @@ function FilterControl({ onFilterChange }) {
         >
           {filterOptions.map((option) => {
             return (
-              <>
-                <input
-                  type="radio"
-                  className="btn-check"
-                  name="btnradio"
-                  id={"btnradio" + option.value.toString()}
-                  value={option.value.toString()}
-                  // checked={true}
-                  onClick={onFilterChange}
-                  key={filterOptions.name}
-                  readOnly
-                />
-                <label
-                  className="btn btn-outline-primary"
-                  htmlFor={"btnradio" + option.value.toString()}
-                >
-                  {option.name}
-                </label>
-              </>
+              <FilterItem
+                key={option.name}
+                option={option}
+                onFilterChange={onFilterChange}
+              />
             );
           })}
         </div>

@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 
 import "./App.css";
-import CreateAnnouncement from "./announcements-board/components/create-announcement/create-announcement";
-import ListAnnouncement from "./announcements-board/components/list-announcements/list-announcement";
-import FilterControl from "./announcements-board/components/filter/filter-control";
+import CreateAnnouncement from "./announcements-board/components/create-announcement/CreateAnnouncement";
+import ListAnnouncements from "./announcements-board/components/list-announcements/ListAnnouncements";
+import FilterControl from "./announcements-board/components/filter/FilterControl";
 
 function App() {
   const [filter, setFilter] = React.useState("Symbol(All)");
@@ -37,7 +37,7 @@ function App() {
 
       {/* <!-- filter-labels --> */}
       <FilterControl onFilterChange={filterChangeHandler}></FilterControl>
-      <ListAnnouncement selectedFilter={filter} />
+      <ListAnnouncements selectedFilter={filter} />
     </div>
   );
 }
