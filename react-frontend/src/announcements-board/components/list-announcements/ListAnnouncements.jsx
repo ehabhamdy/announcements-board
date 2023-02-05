@@ -36,7 +36,7 @@ function ListAnnouncements({ selectedFilter }) {
         <h2>No announcements to be displayed</h2>
       ) : (
         announcements.map((announcement) => {
-          return <Card key={announcement.id} announcement />;
+          return <Card key={announcement.id} announcement={announcement} />;
         })
       )}
     </>
