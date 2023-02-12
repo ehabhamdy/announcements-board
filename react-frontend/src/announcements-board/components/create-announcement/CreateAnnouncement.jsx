@@ -1,36 +1,69 @@
-import { useState } from "react";
-
 import "bootstrap/dist/css/bootstrap.css";
+import { useEffect } from "react";
+import { useReducer, useState } from "react";
+
+const announcementReducer = (state, action) => {
+  if (action.type === "USER_INPUT") {
+    return {
+      value: action.val,
+      isValid: action.val.trim().length > 10,
+    };
+  }
+
+  if (action.type == "INPUT_BLUR") {
+    return {
+      value: state.value,
+      isValid: state.value.trim().length > 10,
+    };
+  }
+
+  return { value: "", isValid: false };
+};
+
+const initialAnnouncementState = { value: "", isValid: null };
 
 function CreateAnnouncement({ onCreateAnnouncement }) {
-  const [isValid, setIsValid] = useState(true);
-  const [enteredAnnouncement, setEnteredAnnouncement] = useState("");
+  const [formIsValid, setFormIsValid] = useState(null);
+
+  const [announcementState, dispatchAnnouncements] = useReducer(
+    announcementReducer,
+    initialAnnouncementState
+  );
+
+  const { isValid: announcementContentIsValid } = announcementState;
+  useEffect(() => {
+    // input debounce
+    const identifier = setTimeout(() => {
+      setFormIsValid(announcementContentIsValid);
+    }, 1000);
+
+    return () => {
+      clearTimeout(identifier);
+    };
+  }, [announcementContentIsValid]); // Only update form validity when the input validity changes
 
   const announcementChangeHandler = (event) => {
-    setEnteredAnnouncement(event.target.value);
-    console.log("change");
-    if (event.target.value.trim().length === 0) {
-      setIsValid(false);
-    } else {
-      setIsValid(true);
-    }
+    dispatchAnnouncements({ type: "USER_INPUT", val: event.target.value });
+  };
+
+  const handleInputBlur = () => {
+    dispatchAnnouncements({ type: "INPUT_BLUR" });
   };
 
   const submitHandler = (event) => {
     event.preventDefault();
-    if (enteredAnnouncement.trim().length === 0) {
-      setIsValid(false);
-      return;
-    }
-    // onCreateAnnouncement(enteredAnnouncement);
+    // Make a request to submit a new announcement
+    // onCreateAnnouncement()
   };
 
   return (
     <form onSubmit={submitHandler}>
       <label
         htmlFor="announcementContent"
-        className={`form-label fs-6 ${isValid ? "valid" : "noValid"}`}
-        style={{ color: !isValid ? "red" : "black" }}
+        className={`form-label fs-6 ${
+          formIsValid === false ? "noValid" : "valid"
+        }`}
+        style={{ color: formIsValid === false ? "red" : "black" }}
       >
         Announcement
       </label>
@@ -42,17 +75,22 @@ function CreateAnnouncement({ onCreateAnnouncement }) {
         placeholder="Please enter you announcement content ..."
         className="form-control"
         onChange={announcementChangeHandler}
-        value={enteredAnnouncement}
-        style={{ borderColor: !isValid ? "red" : "black" }}
+        onBlur={handleInputBlur}
+        value={announcementState.value}
+        style={{ borderColor: formIsValid === false ? "red" : "black" }}
       ></textarea>
 
-      {!isValid ? (
+      {formIsValid === false ? (
         <p className="bd-highlight fs-7 text-danger">
           Please enter the announcement content before submitting the form
         </p>
       ) : null}
 
-      <button type="submit" className="mt-3 btn btn-primary">
+      <button
+        type="submit"
+        className="mt-3 btn btn-primary"
+        disabled={!formIsValid}
+      >
         Create Announcement
       </button>
     </form>
