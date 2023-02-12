@@ -20,6 +20,7 @@ function CreateAnnouncement({ onCreateAnnouncement }) {
     event.preventDefault();
     if (enteredAnnouncement.trim().length === 0) {
       setIsValid(false);
+      return;
     }
     // onCreateAnnouncement(enteredAnnouncement);
   };

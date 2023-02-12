@@ -1,41 +1,25 @@
 import "bootstrap/dist/css/bootstrap.css";
 import React from "react";
 import Card from "../card/Card";
+import useAnnouncements from "../../services/useAnnouncements";
 
 function ListAnnouncements({ selectedFilter }) {
   console.log(selectedFilter);
 
-  const announcements = [
-    {
-      id: 1,
-      content: "First announcemen",
-      createdOn: "16-Jan-2023",
-    },
-    {
-      id: 2,
-      content: "Second announcement",
-      createdOn: "16-Jan-2023",
-    },
-  ];
+  const { data, isLoading } = useAnnouncements(0);
 
-  // let announcementsList = announcements.length === 0 && (
-  //   <h2>No announcements to be displayed</h2>
-  // );
-
-  // announcementsList =
-  //   announcements.length > 0 &&
-  //   announcements.map((announcement) => {
-  //     return <Card key={announcement.id} announcement />;
-  //   });
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
 
   return (
     <>
       <h2>{selectedFilter}</h2>
       {/* {announcementsList} */}
-      {announcements.length === 0 ? (
+      {data.announcements.length === 0 ? (
         <h2>No announcements to be displayed</h2>
       ) : (
-        announcements.map((announcement) => {
+        data.announcements.map((announcement) => {
           return <Card key={announcement.id} announcement={announcement} />;
         })
       )}

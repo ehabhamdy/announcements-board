@@ -5,6 +5,18 @@ import CreateAnnouncement from "./announcements-board/components/create-announce
 import ListAnnouncements from "./announcements-board/components/list-announcements/ListAnnouncements";
 import FilterControl from "./announcements-board/components/filter/FilterControl";
 
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 1000 * 60, // 5 minutes
+      cacheTime: Infinity, // do not delete stale data
+    },
+  },
+});
+
 function App() {
   const [filter, setFilter] = React.useState("Symbol(All)");
 
@@ -32,13 +44,16 @@ function App() {
   }
 
   return (
-    <div className="container">
-      <CreateAnnouncement onCreateAnnouncement={CreateAnnouncementHanlder} />
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
+      <div className="container">
+        <CreateAnnouncement onCreateAnnouncement={CreateAnnouncementHanlder} />
 
-      {/* <!-- filter-labels --> */}
-      <FilterControl onFilterChange={filterChangeHandler}></FilterControl>
-      <ListAnnouncements selectedFilter={filter} />
-    </div>
+        {/* <!-- filter-labels --> */}
+        <FilterControl onFilterChange={filterChangeHandler}></FilterControl>
+        <ListAnnouncements selectedFilter={filter} />
+      </div>
+    </QueryClientProvider>
   );
 }
 
