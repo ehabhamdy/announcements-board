@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 
 import Request from "../api/Request";
 
-const useInsights = (page) => {
+const useAnnouncementQuery = (page) => {
   return useQuery(
     ["all-announcements", page],
     async () => {
@@ -15,4 +15,4 @@ const useInsights = (page) => {
   );
 };
 
-export default useInsights;
+export default useAnnouncementQuery;

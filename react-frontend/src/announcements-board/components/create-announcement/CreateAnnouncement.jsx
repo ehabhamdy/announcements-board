@@ -1,29 +1,41 @@
 import "bootstrap/dist/css/bootstrap.css";
 import { useEffect } from "react";
 import { useReducer, useState } from "react";
+import useAnnouncementMutation from "../../services/useAnnouncementsMutation";
 
 const announcementReducer = (state, action) => {
   if (action.type === "USER_INPUT") {
     return {
-      value: action.val,
+      content: action.val,
       isValid: action.val.trim().length > 10,
     };
   }
 
   if (action.type == "INPUT_BLUR") {
     return {
-      value: state.value,
-      isValid: state.value.trim().length > 10,
+      content: state.content,
+      isValid: state.content.trim().length > 10,
     };
   }
 
-  return { value: "", isValid: false };
+  return { content: "", isValid: false };
 };
 
-const initialAnnouncementState = { value: "", isValid: null };
+const initialAnnouncementState = { content: "", isValid: null };
 
 function CreateAnnouncement({ onCreateAnnouncement }) {
   const [formIsValid, setFormIsValid] = useState(null);
+
+  const mutation = useAnnouncementMutation();
+  // const [mutate, { isLoading }] = useMutation((userData) => {
+  //   return fetch("/api/users", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(userData),
+  //   }).then((res) => res.json());
+  // });
 
   const [announcementState, dispatchAnnouncements] = useReducer(
     announcementReducer,
@@ -31,6 +43,7 @@ function CreateAnnouncement({ onCreateAnnouncement }) {
   );
 
   const { isValid: announcementContentIsValid } = announcementState;
+
   useEffect(() => {
     // input debounce
     const identifier = setTimeout(() => {
@@ -54,6 +67,8 @@ function CreateAnnouncement({ onCreateAnnouncement }) {
     event.preventDefault();
     // Make a request to submit a new announcement
     // onCreateAnnouncement()
+    const d = mutation.mutate(announcementState);
+    console.log(d);
   };
 
   return (

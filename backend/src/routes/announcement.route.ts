@@ -1,10 +1,10 @@
-import express, {NextFunction, Request, Response, Router} from 'express';
+import express, { NextFunction, Request, Response, Router } from 'express';
 import { IAnnouncement } from '../models/announcement';
 import { AnnouncementsInmemoryAdapter } from '../datastore/announcements-inmemory-adapter';
 import { StorageAdapter } from '../datastore/storage-adapter';
 import { FilterMap } from './utilities/filter.map';
 import { generateRandomData } from './utilities/generate-random-data';
-import {ExpressError} from "../models/Error";
+import { ExpressError } from '../models/Error';
 
 const storageAdapter: StorageAdapter<IAnnouncement> = new AnnouncementsInmemoryAdapter();
 

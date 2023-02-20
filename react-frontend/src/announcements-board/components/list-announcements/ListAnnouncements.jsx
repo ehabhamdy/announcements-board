@@ -1,12 +1,12 @@
 import "bootstrap/dist/css/bootstrap.css";
 import React from "react";
 import Card from "../card/Card";
-import useAnnouncements from "../../services/useAnnouncements";
+import useAnnouncementsQuery from "../../services/useAnnouncementsQuery";
 
 function ListAnnouncements({ selectedFilter }) {
   console.log(selectedFilter);
 
-  const { data, isLoading } = useAnnouncements(0);
+  const { data, isLoading } = useAnnouncementsQuery(0);
 
   if (isLoading) {
     return <h1>Loading...</h1>;
