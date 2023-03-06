@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "react-query";
 
 import Request from "../api/Request";
 
-const useAnnouncementMutation = () => {
+const useAnnouncementMutation = (filter) => {
   const queryClient = useQueryClient();
 
   return useMutation(
@@ -11,15 +11,18 @@ const useAnnouncementMutation = () => {
     },
     {
       onSuccess: (response) => {
-        queryClient.setQueryData(["all-announcements", 0], (oldQueryData) => {
-          return {
-            message: oldQueryData.message,
-            announcements: [
-              response.data.announcement,
-              ...oldQueryData.announcements,
-            ],
-          };
-        });
+        queryClient.setQueryData(
+          ["all-announcements", filter],
+          (oldQueryData) => {
+            return {
+              message: response.data.message,
+              announcements: [
+                response.data.announcement,
+                ...oldQueryData.announcements,
+              ],
+            };
+          }
+        );
       },
     }
   );

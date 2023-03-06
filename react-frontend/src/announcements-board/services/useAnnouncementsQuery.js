@@ -2,11 +2,11 @@ import { useQuery } from "react-query";
 
 import Request from "../api/Request";
 
-const useAnnouncementQuery = (page) => {
+const useAnnouncementQuery = (filter) => {
   return useQuery(
-    ["all-announcements", page],
+    ["all-announcements", filter],
     async () => {
-      const { data } = await Request.get("/api/v1/announcements");
+      const { data } = await Request.get(`/api/v1/announcements/${filter}`);
       return data;
     },
     {

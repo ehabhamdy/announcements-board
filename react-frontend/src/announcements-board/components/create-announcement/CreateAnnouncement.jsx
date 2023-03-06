@@ -11,7 +11,7 @@ const announcementReducer = (state, action) => {
     };
   }
 
-  if (action.type == "INPUT_BLUR") {
+  if (action.type === "INPUT_BLUR") {
     return {
       content: state.content,
       isValid: state.content.trim().length > 10,
@@ -23,19 +23,10 @@ const announcementReducer = (state, action) => {
 
 const initialAnnouncementState = { content: "", isValid: null };
 
-function CreateAnnouncement({ onCreateAnnouncement }) {
+function CreateAnnouncement({ filter }) {
   const [formIsValid, setFormIsValid] = useState(null);
 
-  const mutation = useAnnouncementMutation();
-  // const [mutate, { isLoading }] = useMutation((userData) => {
-  //   return fetch("/api/users", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(userData),
-  //   }).then((res) => res.json());
-  // });
+  const mutation = useAnnouncementMutation(filter);
 
   const [announcementState, dispatchAnnouncements] = useReducer(
     announcementReducer,
@@ -67,8 +58,7 @@ function CreateAnnouncement({ onCreateAnnouncement }) {
     event.preventDefault();
     // Make a request to submit a new announcement
     // onCreateAnnouncement()
-    const d = mutation.mutate(announcementState);
-    console.log(d);
+    mutation.mutate(announcementState);
   };
 
   return (

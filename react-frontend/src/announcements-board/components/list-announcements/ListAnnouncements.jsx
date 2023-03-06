@@ -4,9 +4,7 @@ import Card from "../card/Card";
 import useAnnouncementsQuery from "../../services/useAnnouncementsQuery";
 
 function ListAnnouncements({ selectedFilter }) {
-  console.log(selectedFilter);
-
-  const { data, isLoading } = useAnnouncementsQuery(0);
+  const { data, isLoading } = useAnnouncementsQuery(selectedFilter);
 
   if (isLoading) {
     return <h1>Loading...</h1>;

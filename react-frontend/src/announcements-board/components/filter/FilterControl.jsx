@@ -1,17 +1,10 @@
 import FilterItem from "./FilterItem";
 
-export const FilterType = {
-  All: Symbol("All"),
-  Week: Symbol("Week"),
-  Month: Symbol("Month"),
-  Today: Symbol("Today"),
-};
-
 const filterOptions = [
-  { name: "Today", value: FilterType.Today, checked: true },
-  { name: "Last 7 days", value: FilterType.Week, check: false },
-  { name: "Last Month", value: FilterType.Month, check: false },
-  { name: "All", value: FilterType.All, check: false },
+  { name: "Today", value: "Today", checked: true },
+  { name: "Last 7 days", value: "Week", check: false },
+  { name: "Last Month", value: "Month", check: false },
+  { name: "All", value: "All", check: false },
 ];
 
 function FilterControl({ onFilterChange }) {
