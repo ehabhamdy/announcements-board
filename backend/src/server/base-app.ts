@@ -1,8 +1,10 @@
-import express, {NextFunction, Request, Response} from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import AppConfig from './config/app-config';
 import * as path from 'path';
 import baseRouter from '../routes/base.route';
+import clientRouter from '../routes/client.route';
+
 import morgan from 'morgan';
 import { RouterModel } from '../models/router-model';
 import announcementRoute from '../routes/announcement.route';
@@ -32,9 +34,9 @@ export default abstract class BaseApp {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use('/images', express.static(path.join(__dirname, '../images')));
-    app.all('/', (_: Request, res: Response) => {
-      res.redirect('/api/v1/base');
-    });
+    // app.all('/', (_: Request, res: Response) => {
+    //   res.redirect('/api/v1/base');
+    // });
     app.use((_, res, next) => {
       res.setHeader('Access-Control-Allow-Origin', '*');
       res.setHeader(
@@ -68,6 +70,7 @@ export default abstract class BaseApp {
 
   public getExpressRoutes(): Array<RouterModel> {
     return [
+      { contextPath: '/', router: clientRouter },
       { contextPath: '/api/v1/base', router: baseRouter },
       { contextPath: '/api/v1/announcements', router: announcementRoute },
     ];
