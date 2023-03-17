@@ -1,0 +1,8 @@
+---
+applications:
+  - name: announcements-board
+    routes:
+      - route: announcements-board.cfapps.eu12.hana.ondemand.com
+    path: backend
+    memory: 128M
+    command: node dist/index.js
